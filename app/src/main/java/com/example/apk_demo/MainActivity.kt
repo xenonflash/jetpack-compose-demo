@@ -33,8 +33,14 @@ import androidx.compose.ui.unit.dp
 import com.example.apk_demo.ui.theme.ApkdemoTheme
 import java.security.interfaces.DSAPublicKey
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Icon
 import androidx.compose.material3.TextButton
 // remember
 import androidx.compose.runtime.getValue
@@ -42,6 +48,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,6 +141,7 @@ fun MsgCardList(items: List<Msg>) {
     }
 }
 
+
 @Composable
 fun MoreComp() {
 
@@ -148,6 +159,10 @@ fun MoreComp() {
                 .padding(10.dp)
         ) {
             Text("按钮")
+            Button(onClick = {}) {
+                Icon(Icons.Filled.Favorite, contentDescription = "收藏", modifier = Modifier.size(10.dp))
+                Text("图标按钮")
+            }
             Spacer(modifier = Modifier.padding(10.dp))
             Button(
                 onClick = { counter++ }
@@ -214,5 +229,50 @@ fun MoreComp() {
         )
     }
 
+//    卡片
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("卡片 Card")
+            Spacer(modifier = Modifier.padding(10.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp) // 外边距
+                    .clickable { },
 
+                // 设置点击波纹效果，注意如果 CardDemo() 函数不在 MaterialTheme 下调用
+                // 将无法显示波纹效果
+            ) {
+                Column(
+                    modifier = Modifier.padding(15.dp) // 内边距
+                ) {
+                    Text(
+                        buildAnnotatedString {
+                            append("欢迎来到 ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.W900, color = Color(0xFF4552B8))
+                            ) {
+                                append("Jetpack Compose 博物馆")
+                            }
+                        }
+                    )
+                    Text(
+                        buildAnnotatedString {
+                            append("你现在观看的章节是 ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.W900)) {
+                                append("Card")
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    }
 }
