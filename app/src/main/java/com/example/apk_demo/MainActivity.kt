@@ -34,12 +34,15 @@ import com.example.apk_demo.ui.theme.ApkdemoTheme
 import java.security.interfaces.DSAPublicKey
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TextButton
 // remember
@@ -272,6 +275,29 @@ fun MoreComp() {
                         }
                     )
                 }
+            }
+        }
+    }
+
+//    浮动按钮
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("浮动按钮 FloationActionButton")
+            FloatingActionButton(
+                onClick = { openDialog = true },
+                modifier = Modifier.size(40.dp),
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "浮动按钮")
             }
         }
     }
