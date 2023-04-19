@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,28 +33,29 @@ import androidx.compose.ui.unit.dp
 import com.example.apk_demo.ui.theme.ApkdemoTheme
 import java.security.interfaces.DSAPublicKey
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.TextButton
 // remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ApkdemoTheme {
-//                MsgCard(Msg("你好", "content"))
                 val data = listOf(
                     Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
-                    Msg(title = "测试2", content = "l路上开飞机就快乐男声"),
-                    Msg(title = "测试3", content = "，美女，史蒂夫技术开发和健康"),
-                    Msg(title = "测试4", content = "可撒娇疯狂i素交流空间"),
-                    Msg(title = "测试5", content = "啊太晚而突然因为他一人"),
-                    Msg(title = "测试6", content = "没吃呢美女吧，试飞"),
-                    Msg(title = "测试7", content = "破我诶人陪我诶同款陌生地方。")
+                    Msg(title = "测试2", content = "l路上开飞机就快乐男声")
                 )
-                MsgCardList(items = data)
+                Column() {
+                    MsgCardList(items = data)
+                    MoreComp()
+                }
             }
         }
     }
@@ -79,7 +81,9 @@ fun MsgCard(msg: Msg) {
         shadowElevation = 5.dp,
         modifier = Modifier
             .padding(all = 10.dp)
+            .fillMaxWidth()
             .clickable(onClick = { handleClick() }),
+
         color = bgColor
     ) {
         Row(
@@ -115,8 +119,6 @@ fun MsgCard(msg: Msg) {
             }
         }
     }
-
-
 }
 
 
@@ -127,4 +129,90 @@ fun MsgCardList(items: List<Msg>) {
             MsgCard(msg)
         }
     }
+}
+
+@Composable
+fun MoreComp() {
+
+// 按钮
+    var counter by remember { mutableStateOf(0) }
+
+    Surface(
+       shadowElevation = 5.dp,
+       modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("按钮")
+            Spacer(modifier = Modifier.padding(10.dp))
+            Button(
+                onClick = { counter++ }
+            ) {
+                Text(
+                    text = "增加"
+                )
+
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+            Button(
+                onClick = { counter-- }
+            ) {
+                Text(
+                    text = "减少"
+                )
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+            Text(text = counter.toString())
+        }
+    }
+
+//    弹窗
+    var openDialog by remember { mutableStateOf(false) }
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("弹窗 AlertDialog")
+            Spacer(modifier = Modifier.padding(10.dp))
+            Button(
+                onClick = { openDialog = true }
+            ) {
+                Text(
+                    text = "打开弹窗"
+                )
+            }
+        }
+
+        if (openDialog) AlertDialog(
+            onDismissRequest = { openDialog = false },
+            title = {
+                Text("弹窗标题")
+            },
+            text = {
+                Text("弹窗内容")
+            },
+            confirmButton = {
+                TextButton(onClick = { openDialog = false }) {
+                    Text("确定")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { openDialog = false }) {
+                    Text("取消")
+                }
+            }
+        )
+    }
+
+
 }
