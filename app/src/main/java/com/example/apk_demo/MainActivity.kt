@@ -1,6 +1,7 @@
 package com.example.apk_demo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -9,15 +10,20 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import com.example.apk_demo.ui.theme.ApkdemoTheme
 import java.security.interfaces.DSAPublicKey
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -46,6 +55,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Slider
 import androidx.compose.material3.TextButton
 // remember
 import androidx.compose.runtime.getValue
@@ -55,10 +65,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -71,9 +87,14 @@ class MainActivity : ComponentActivity() {
             ApkdemoTheme {
                 val data = listOf(
                     Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
-                    Msg(title = "测试2", content = "l路上开飞机就快乐男声")
+                    Msg(title = "测试2", content = "l路上开飞机就快乐男声"),
+                    Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
                 )
-                Column() {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState()),
+                ) {
                     MsgCardList(items = data)
                     MoreComp()
                 }
@@ -145,7 +166,9 @@ fun MsgCard(msg: Msg) {
 
 @Composable
 fun MsgCardList(items: List<Msg>) {
-    LazyColumn() {
+    LazyColumn(
+        modifier = Modifier.height(300.dp)
+    ) {
         items(items) {msg ->
             MsgCard(msg)
         }
@@ -343,6 +366,78 @@ fun MoreComp() {
                 modifier = Modifier.size(100.dp),
                 placeholder = painterResource(id = R.drawable.ct6)
             )
+        }
+    }
+
+    //  滑动选择器
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            var value by remember { mutableStateOf(0f)}
+            Text("Slider")
+            Spacer(modifier = Modifier.absolutePadding(right = 10.dp))
+            Slider(
+                value = value,
+                onValueChange = { value = it},
+                modifier = Modifier
+                    .width(200.dp)
+                    .padding(end = 10.dp),
+                valueRange = 1f..10f,
+                steps = 5
+            )
+            Text(value.toInt().toString())
+        }
+    }
+
+    //  文本
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("文本",  modifier = Modifier.padding(end = 10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(BorderStroke(1.dp, Color.Blue))
+                    .padding(10.dp)
+            ) {
+                Text("文本居左", modifier = Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Left))
+                Text("文本居中", modifier = Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Center))
+                Text("文本居右", modifier = Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.Right))
+                Text("窗前明月光\n疑是地上霜\n举头望明月\n低头思故乡", modifier = Modifier.fillMaxWidth(), style = TextStyle(
+                    fontFamily = FontFamily(Font(R.font.kaishu)),
+                    color = Color.Magenta
+                ))
+                val ctx = LocalContext.current
+                Text("点击文本", modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        onClick = {
+                            Toast
+                                .makeText(ctx, "你点击了文本", Toast.LENGTH_SHORT)
+                                .show()
+                        },
+                    )
+                )
+                SelectionContainer() {
+                    Text("可复制文本， 这段文本是可以复制的")
+                }
+
+            }
+
         }
     }
 }
