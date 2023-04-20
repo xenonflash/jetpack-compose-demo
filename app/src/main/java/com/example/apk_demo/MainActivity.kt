@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -50,11 +52,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -299,6 +307,42 @@ fun MoreComp() {
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "浮动按钮")
             }
+        }
+    }
+    
+//    图片
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text("图片")
+            Spacer(modifier = Modifier.absolutePadding(right = 10.dp))
+            Image(
+                painter = painterResource(id = R.drawable.ct6),
+                contentScale = ContentScale.Crop,
+                contentDescription = "ct6",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(CircleShape)
+                    .shadow(10.dp, CircleShape)
+//                    .border(border = BorderStroke(5.dp, Color.Blue), CircleShape)
+
+            )
+
+            Spacer(modifier = Modifier.padding(15.dp))
+            Text(text = "网络图片：")
+            AsyncImage(
+                model = "https://cdn.pixabay.com/photo/2023/04/03/04/48/woman-7895953_1280.jpg",
+                contentDescription = "image",
+                modifier = Modifier.size(100.dp),
+                placeholder = painterResource(id = R.drawable.ct6)
+            )
         }
     }
 }
