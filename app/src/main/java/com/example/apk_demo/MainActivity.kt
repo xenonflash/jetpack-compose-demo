@@ -42,21 +42,28 @@ import com.example.apk_demo.ui.theme.ApkdemoTheme
 import java.security.interfaces.DSAPublicKey
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.MutableState
 // remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,6 +83,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
@@ -176,6 +184,7 @@ fun MsgCardList(items: List<Msg>) {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoreComp() {
 
@@ -436,8 +445,71 @@ fun MoreComp() {
                     Text("可复制文本， 这段文本是可以复制的")
                 }
 
-            }
+                // 富文本
+                Text(
+                    buildAnnotatedString {
+                        append( "这是")
+                        withStyle(SpanStyle(background = MaterialTheme.colorScheme.secondaryContainer)) {
+                            append("一段")
+                        }
+                        withStyle(SpanStyle(fontSize = 30.sp, color = Color.Red)) {
+                            append("富文本")
+                        }
+                    }
+                )
 
+            }
+        }
+    }
+
+    //  输入框
+    Surface(
+        shadowElevation = 5.dp,
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            var text by remember {
+                mutableStateOf("")
+            }
+            Text("输入框", modifier = Modifier.absolutePadding(right = 10.dp))
+            BasicTextField(
+                value = text,
+                onValueChange = { text = it },
+
+                decorationBox = {innerTextField ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .height(30.dp)
+                            .width(200.dp)
+                            .border(
+                                BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
+                                RoundedCornerShape(7.dp)
+                            )
+
+                    ) {
+                        Icon(Icons.Filled.Face, contentDescription = null, Modifier.absolutePadding(right = 10.dp))
+                        innerTextField()
+                        Icon(Icons.Filled.Info, contentDescription = "icon", Modifier.absolutePadding(left = 10.dp))
+                    }
+                }
+            )
+            var text2 by remember {
+                mutableStateOf("")
+            }
+            OutlinedTextField(
+                value = text2,
+                singleLine = true,
+                modifier = Modifier.padding(5.dp),
+                textStyle = TextStyle(fontSize = 18.sp),
+                onValueChange = { text2 = it },
+                label = { Text(text = "用户名") }
+            )
         }
     }
 }
