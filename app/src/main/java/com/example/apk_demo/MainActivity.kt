@@ -91,15 +91,16 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.apk_demo.pages.LoginPage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-            var navController = rememberNavController()
+            val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "main") {
                 composable(route = "main", content = { MainPage(nav = navController) })
+                composable(route = "login", content = { LoginPage(nav = navController) })
             }
         }
     }
@@ -112,6 +113,9 @@ fun MainPage(nav: NavController) {
             .fillMaxHeight()
             .verticalScroll(rememberScrollState()),
     ) {
+        Button(onClick = { nav.navigate("login")}) {
+            Text(text = "跳转到登陆")
+        }
         MsgCardList()
         MoreComp()
     }
