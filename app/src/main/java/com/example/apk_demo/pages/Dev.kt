@@ -95,7 +95,7 @@ import coil.compose.rememberImagePainter
 import com.example.apk_demo.pages.LoginPage
 
 @Composable
-fun MainPage(nav: NavController) {
+fun DevPage(nav: NavController) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
