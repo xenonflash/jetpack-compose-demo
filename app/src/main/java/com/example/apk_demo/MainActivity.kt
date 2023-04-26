@@ -84,33 +84,41 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
-import com.example.apk_demo.components.LoginForm
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ApkdemoTheme {
-                val data = listOf(
-                    Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
-                    Msg(title = "测试2", content = "l路上开飞机就快乐男声"),
-                    Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .verticalScroll(rememberScrollState()),
-                ) {
-                    MsgCardList(items = data)
-                    MoreComp()
+            val data = listOf(
+                Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
+                Msg(title = "测试2", content = "l路上开飞机就快乐男声"),
+                Msg(title = "测试1", content = "是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里是开飞机离开撒娇弗兰克史蒂史蒂夫开始倒计时六块腹肌轮廓设计李静夫空间里看见了看师傅交流空间里"),
+            )
+            var navController = rememberNavController()
+            NavHost(navController = navController, startDestination = "main") {
+                composable(route = "main") {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .verticalScroll(rememberScrollState()),
+                    ) {
+                        MsgCardList(items = data)
+                        MoreComp()
+                    }
                 }
             }
+
         }
     }
 }
+
+// 初始化navigator
 
 data class Msg(val title: String, val content: String)
 
