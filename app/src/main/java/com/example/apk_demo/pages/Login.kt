@@ -31,6 +31,9 @@ fun LoginPage(nav: NavController) {
             Button(onClick = { nav.navigate("dev") }) {
                 Text("跳转到dev")
             }
+            Button(onClick = { nav.navigate("home") }) {
+                Text("跳转到home")
+            }
         }
     }
 }

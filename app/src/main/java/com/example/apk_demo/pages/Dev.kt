@@ -53,6 +53,8 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -93,6 +95,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.apk_demo.pages.LoginPage
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun DevPage(nav: NavController) {
@@ -106,6 +109,22 @@ fun DevPage(nav: NavController) {
         }
         MsgCardList()
         MoreComp()
+
+        val items = listOf<String>("Home", "Dev")
+        Row(
+            modifier = Modifier.border(1.dp, Color.Red).fillMaxWidth(),
+           horizontalArrangement = Arrangement.SpaceEvenly
+
+        ) {
+            items.forEach{
+                Column(
+                    Modifier.border(1.dp, Color.Blue)
+                ) {
+                    Icon(Icons.Filled.Face, contentDescription = it)
+                    Text(text = it)
+                }
+            }
+        }
     }
 }
 

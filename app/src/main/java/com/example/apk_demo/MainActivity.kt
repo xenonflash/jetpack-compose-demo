@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apk_demo.pages.LoginPage
 import com.example.apk_demo.pages.DevPage
+import com.example.apk_demo.pages.HomePage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = "login") {
                 composable(route = "dev", content = { DevPage(nav = navController) })
                 composable(route = "login", content = { LoginPage(nav = navController) })
+                composable(route = "home", content = { HomePage(nav = navController) })
             }
         }
     }
