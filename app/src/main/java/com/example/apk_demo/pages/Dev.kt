@@ -14,6 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -94,38 +95,27 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.apk_demo.components.BottomBar
 import com.example.apk_demo.pages.LoginPage
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun DevPage(nav: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .verticalScroll(rememberScrollState()),
-    ) {
-        Button(onClick = { nav.navigate("login")}) {
-            Text(text = "跳转到登陆")
-        }
-        MsgCardList()
-        MoreComp()
-
-        val items = listOf<String>("Home", "Dev")
-        Row(
-            modifier = Modifier.border(1.dp, Color.Red).fillMaxWidth(),
-           horizontalArrangement = Arrangement.SpaceEvenly
-
+    Box(Modifier.fillMaxSize()) {
+        BottomBar()
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState()),
         ) {
-            items.forEach{
-                Column(
-                    Modifier.border(1.dp, Color.Blue)
-                ) {
-                    Icon(Icons.Filled.Face, contentDescription = it)
-                    Text(text = it)
-                }
+            Button(onClick = { nav.navigate("login")}) {
+                Text(text = "跳转到登陆")
             }
+            MsgCardList()
+            MoreComp()
         }
     }
+
 }
 
 data class Msg(val title: String, val content: String)
