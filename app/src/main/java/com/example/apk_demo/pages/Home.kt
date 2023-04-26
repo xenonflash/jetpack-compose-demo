@@ -1,5 +1,8 @@
 package com.example.apk_demo.pages
 
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.window.SplashScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -42,6 +46,7 @@ fun HomePage(nav: NavController) {
             Button(onClick = { nav.navigate("login") }) {
                 Text("跳转回登陆")
             }
+            WebComp()
         }
     }
 }
@@ -51,10 +56,36 @@ fun HomePage(nav: NavController) {
 fun SplashScreen() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
     val progress by animateLottieCompositionAsState(composition)
-    Column(Modifier.fillMaxSize().background(Color.White), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Color.White), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         LottieAnimation(
             composition = composition,
             progress = { progress }
         )
     }
+
+
+}
+
+@Composable
+fun WebComp() {
+    // Declare a string that contains a url
+    val mUrl = "https://www.geeksforgeeks.org"
+
+    // Adding a WebView inside AndroidView
+    // with layout as full screen
+    AndroidView(factory = {
+        WebView(it).apply {
+            var layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            webViewClient = WebViewClient()
+            loadUrl(mUrl)
+        }
+    }, update = {
+        it.loadUrl(mUrl)
+    })
 }
