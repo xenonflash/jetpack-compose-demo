@@ -1,5 +1,6 @@
 package com.example.apk_demo.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun BottomBar() {
     val items = listOf<String>("Home", "Dev")
     Row(
-        modifier = Modifier.border(1.dp, Color.Red).fillMaxWidth(),
+        modifier = Modifier.border(1.dp, Color.Red).fillMaxWidth().background(MaterialTheme.colorScheme.primary),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         items.forEach{
