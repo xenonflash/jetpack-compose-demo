@@ -72,7 +72,7 @@ fun SplashScreen() {
 @Composable
 fun WebComp() {
     // Declare a string that contains a url
-    val mUrl = "https://www.geeksforgeeks.org"
+    val mUrl = "https://news.google.com"
 
     // Adding a WebView inside AndroidView
     // with layout as full screen

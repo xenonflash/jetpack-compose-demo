@@ -76,7 +76,6 @@ import com.example.apk_demo.components.BottomBar
 @Composable
 fun DevPage(nav: NavController) {
     Box(Modifier.fillMaxSize()) {
-
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -88,7 +87,7 @@ fun DevPage(nav: NavController) {
             MsgCardList()
             MoreComp()
         }
-        BottomBar()
+        BottomBar(Modifier.align(Alignment.BottomCenter))
     }
 
 }
