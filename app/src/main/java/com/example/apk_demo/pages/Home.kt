@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +55,6 @@ fun HomePage(nav: NavController) {
         ) {
             SplashScreen()
         }
-
     }
 }
 
@@ -78,8 +80,23 @@ fun SplashScreen() {
 
 @Composable
 fun MainContent() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Column(Modifier.fillMaxSize()) {
+        var checked by remember {
+            mutableStateOf(false)
+        }
+        var showMenu by remember {
+            mutableStateOf(false)
+        }
+
         Text("Home")
+        Checkbox(checked = checked, onCheckedChange = { checked = !checked })
+        Button(onClick = { showMenu = true }) {
+            Text(text = "展开菜单")
+        }
+        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = !showMenu }) {
+            DropdownMenuItem(text = { Text("选项1") }, onClick = {  })
+            DropdownMenuItem(text = { Text("选项2") }, onClick = {  })
+        }
     }
 }
 
