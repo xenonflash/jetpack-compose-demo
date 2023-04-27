@@ -4,7 +4,11 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.window.SplashScreen
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.excludeFromSystemGesture
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,13 +45,14 @@ fun HomePage(nav: NavController) {
             delay(1500)
             showSplash = false
         })
-        if (showSplash) SplashScreen() else Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-            Text("Home")
-            Button(onClick = { nav.navigate("login") }) {
-                Text("跳转回登陆")
-            }
-            WebComp()
+            MainContent()
+        AnimatedVisibility(
+            visible = showSplash,
+            exit = fadeOut()
+        ) {
+            SplashScreen()
         }
+
     }
 }
 
@@ -56,10 +61,12 @@ fun HomePage(nav: NavController) {
 fun SplashScreen() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
     val progress by animateLottieCompositionAsState(composition)
-    Column(
+    Box(
         Modifier
             .fillMaxSize()
-            .background(Color.White), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
         LottieAnimation(
             composition = composition,
             progress = { progress }
@@ -67,6 +74,13 @@ fun SplashScreen() {
     }
 
 
+}
+
+@Composable
+fun MainContent() {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Home")
+    }
 }
 
 @Composable
