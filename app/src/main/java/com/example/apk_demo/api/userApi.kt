@@ -33,19 +33,23 @@ data class UserResModel(
     var message: String
 )
 
-fun getUserInfo(onSuccess: (data: UserModel?) -> Unit) {
-    val call: Call<UserResModel?>? = api.getUserInfo();
-    call!!.enqueue(object: Callback<UserResModel?> {
-        override fun onResponse(call: Call<UserResModel?>, response: Response<UserResModel?>) {
-            if(response.isSuccessful) {
-                val res = response.body()
-                Log.d("Main", "success!" + res.toString())
-                onSuccess(res?.data as UserModel)
+object UserApi{
+    fun getUserInfo(onSuccess: (data: UserModel?) -> Unit) {
+        val call: Call<UserResModel?>? = api.getUserInfo();
+        call!!.enqueue(object: Callback<UserResModel?> {
+            override fun onResponse(call: Call<UserResModel?>, response: Response<UserResModel?>) {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    Log.d("Main", "success!" + res.toString())
+                    onSuccess(res?.data as UserModel)
+                }
             }
-        }
 
-        override fun onFailure(call: Call<UserResModel?>, t: Throwable) {
-            Log.e("Main", "Failed mate " + t.message.toString())
-        }
-    })
+            override fun onFailure(call: Call<UserResModel?>, t: Throwable) {
+                Log.e("Main", "Failed mate " + t.message.toString())
+            }
+        })
+    }
+
 }
+

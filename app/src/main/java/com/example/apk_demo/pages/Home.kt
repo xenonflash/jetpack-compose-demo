@@ -37,12 +37,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieDynamicProperties
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.apk_demo.R
+import com.example.apk_demo.api.UserApi
 import com.example.apk_demo.api.UserModel
-import com.example.apk_demo.api.getUserInfo
 import kotlinx.coroutines.delay
 
 @Composable
@@ -100,7 +99,7 @@ fun MainContent() {
             mutableStateOf("你好")
         }
         fun getUser() {
-            getUserInfo { data -> userInfo = data as UserModel }
+            UserApi.getUserInfo { data -> userInfo = data as UserModel }
             msg = "我不好"
         }
 
