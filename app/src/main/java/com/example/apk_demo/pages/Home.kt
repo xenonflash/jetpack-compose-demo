@@ -3,6 +3,7 @@ package com.example.apk_demo.pages
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import android.window.SplashScreen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
@@ -28,14 +29,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieDynamicProperties
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.apk_demo.R
+import com.example.apk_demo.api.UserModel
+import com.example.apk_demo.api.getUserInfo
 import kotlinx.coroutines.delay
 
 @Composable
@@ -80,25 +87,37 @@ fun SplashScreen() {
 
 @Composable
 fun MainContent() {
+
     Column(Modifier.fillMaxSize()) {
         var checked by remember {
             mutableStateOf(false)
         }
-        var showMenu by remember {
-            mutableStateOf(false)
+        var userInfo by remember {
+            mutableStateOf<UserModel>(UserModel(name = "", age = 0, avatar = ""))
         }
 
-        Text("Home")
-        Checkbox(checked = checked, onCheckedChange = { checked = !checked })
-        Button(onClick = { showMenu = true }) {
-            Text(text = "展开菜单")
+        var msg by remember {
+            mutableStateOf("你好")
         }
-        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = !showMenu }) {
-            DropdownMenuItem(text = { Text("选项1") }, onClick = {  })
-            DropdownMenuItem(text = { Text("选项2") }, onClick = {  })
+        fun getUser() {
+            getUserInfo { data -> userInfo = data as UserModel }
+            msg = "我不好"
         }
+
+
+        Button(onClick = { getUser() }) {
+            Text("获取用户信息")
+        }
+
+        Text("Home", style = TextStyle(fontSize = 28.sp))
+        Text("用户名: " + userInfo.name)
+        Text("年龄: " + userInfo.age)
+        Text("msg: $msg")
+        AsyncImage(model = userInfo.avatar, contentDescription = "user avatar")
     }
 }
+
+
 
 @Composable
 fun WebComp() {
