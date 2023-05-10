@@ -41,7 +41,7 @@ enum class LoginMethod(
 
 
 data class LoginReqModel(
-    var LoginMethod: LoginMethod,
+    var loginMethod: LoginMethod,
     var payload: Any
 )
 

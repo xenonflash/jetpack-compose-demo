@@ -1,7 +1,9 @@
 package com.example.apk_demo.pages
 
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 
 
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.width
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -30,12 +33,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.apk_demo.api.LoginMethod
+import com.example.apk_demo.api.LoginReqModel
+import com.example.apk_demo.api.UserApi
+import okhttp3.internal.wait
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,35 +51,50 @@ import androidx.navigation.NavController
 fun LoginPage(nav: NavController) {
     Surface(
         modifier = Modifier
-            .border(BorderStroke(1.dp, Color.Red))
             .fillMaxSize()
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 100.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                .padding(top = 100.dp), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             var username by remember {
                 mutableStateOf("")
             }
             var password by remember {
                 mutableStateOf("")
             }
+            val ctx = LocalContext.current
+            fun handleLogin() {
+                val params = LoginReqModel(
+                    loginMethod = LoginMethod.valueOf(""),
+                    payload = object {
+                        val username = username
+                        var password = password
+                    }
+                )
+                UserApi.login(params, onSuccess = {
+                    Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
+                    nav.navigate("home")
+                })
+            }
+
 
             Text(text = "登录", style = TextStyle(fontSize = 30.sp), modifier = Modifier.padding(bottom = 15.dp))
-            TextField(
+            OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
                 label = { Text(text = "用户名")},
                 modifier = Modifier.padding(bottom = 15.dp)
             )
-            TextField(
+            OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(text = "密码") },
                 modifier = Modifier.padding(bottom = 25.dp)
             )
 
-            Button(onClick = {  },
+            Button(onClick = { handleLogin() },
                 Modifier
                     .width(200.dp)
                     .padding(end = 10.dp)) {

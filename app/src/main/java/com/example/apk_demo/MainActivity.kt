@@ -1,6 +1,8 @@
 package com.example.apk_demo
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
@@ -14,6 +16,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            Utils.LifecycleEffect(
+                onCreate = {
+                    Log.d("", "onCreated")
+                }
+            )
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "login") {
                 composable(route = "dev", content = { DevPage(nav = navController) })
