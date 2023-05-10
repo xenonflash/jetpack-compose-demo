@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 
 
 import androidx.compose.foundation.layout.Column
@@ -31,15 +32,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.apk_demo.R
 import com.example.apk_demo.api.LoginMethod
 import com.example.apk_demo.api.LoginReqModel
 import com.example.apk_demo.api.UserApi
@@ -49,9 +54,10 @@ import okhttp3.internal.wait
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(nav: NavController) {
-    Surface(
+    Box(
         modifier = Modifier
             .fillMaxSize()
+            .paint(painterResource(id = R.drawable.montain), alignment = Alignment.BottomCenter, contentScale = ContentScale.FillWidth)
     ) {
         Column(
             Modifier
