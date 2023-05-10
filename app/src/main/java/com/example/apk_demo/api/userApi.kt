@@ -35,7 +35,7 @@ data class UserResModel(
 
 object UserApi{
     fun getUserInfo(onSuccess: (data: UserModel?) -> Unit) {
-        val call: Call<UserResModel?>? = api.getUserInfo();
+        val call = api.getUserInfo();
         call!!.enqueue(object: Callback<UserResModel?> {
             override fun onResponse(call: Call<UserResModel?>, response: Response<UserResModel?>) {
                 if(response.isSuccessful) {
@@ -50,6 +50,5 @@ object UserApi{
             }
         })
     }
-
 }
 
