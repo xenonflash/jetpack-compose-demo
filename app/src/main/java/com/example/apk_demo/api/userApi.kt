@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 private interface IUserApi{
     @Headers(
@@ -36,18 +37,15 @@ data class LoginModel(
     var token: String
 )
 
-enum class LoginMethod(
-)
+enum class LoginMethod(val value: String){
+    UNAME("uname")
+}
 
 
 data class LoginReqModel(
     var loginMethod: LoginMethod,
     var payload: Any
 )
-
-fun buildApi(api: Call<HttpResModel<Any>>) {
-
-}
 
 object UserApi{
     fun getUserInfo(onSuccess: (data: UserModel?) -> Unit) {

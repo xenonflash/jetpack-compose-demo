@@ -1,6 +1,7 @@
 package com.example.apk_demo.pages
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -73,13 +74,14 @@ fun LoginPage(nav: NavController) {
             val ctx = LocalContext.current
             fun handleLogin() {
                 val params = LoginReqModel(
-                    loginMethod = LoginMethod.valueOf(""),
+                    loginMethod = LoginMethod.UNAME,
                     payload = object {
                         val username = username
                         var password = password
                     }
                 )
                 UserApi.login(params, onSuccess = {
+                    Log.d("login params", params.toString())
                     Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
                     nav.navigate("home")
                 })
@@ -106,7 +108,7 @@ fun LoginPage(nav: NavController) {
                     .padding(end = 10.dp)) {
                 Text(text = "登录")
             }
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { nav.navigate("register") }) {
                 Text("注册")
             }
             Dev(nav = nav)

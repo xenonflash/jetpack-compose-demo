@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,15 +27,14 @@ fun BottomBar(modifier: Modifier) {
 
     Row(
         modifier = Modifier
-            .border(1.dp, Color.Red)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primary)
             .then(modifier),
-        horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         items.forEach{
             Column() {
-                Icon(Icons.Filled.Face, contentDescription = it)
+                Icon(Icons.Filled.Home, contentDescription = it)
                 Text(text = it)
             }
         }
