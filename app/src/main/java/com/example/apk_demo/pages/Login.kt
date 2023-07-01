@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 
 
@@ -58,7 +59,11 @@ fun LoginPage(nav: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .paint(painterResource(id = R.drawable.montain), alignment = Alignment.BottomCenter, contentScale = ContentScale.FillWidth)
+            .paint(
+                painterResource(id = R.drawable.montain),
+                alignment = Alignment.BottomCenter,
+                contentScale = ContentScale.FillWidth
+            )
     ) {
         Column(
             Modifier
@@ -102,10 +107,13 @@ fun LoginPage(nav: NavController) {
                 modifier = Modifier.padding(bottom = 25.dp)
             )
 
-            Button(onClick = { handleLogin() },
-                Modifier
-                    .width(200.dp)
-                    .padding(end = 10.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+            }
+            Button(onClick = { handleLogin() }){
                 Text(text = "登录")
             }
             TextButton(onClick = { nav.navigate("register") }) {
@@ -125,6 +133,9 @@ fun Dev(nav: NavController) {
         }
         TextButton(onClick = { nav.navigate("dev") }) {
             Text(text = "dev")
+        }
+        TextButton(onClick = { nav.navigate("todo") }) {
+            Text(text = "todo")
         }
     }
 }
