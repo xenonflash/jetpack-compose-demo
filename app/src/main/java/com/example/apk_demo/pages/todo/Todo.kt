@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
@@ -69,22 +71,24 @@ fun TodoList(items: State<List<TodoItemData>>, store: TodoViewModel) {
 
     ){
         items(items.value) {it ->
-            TodoItem(data = it, handleCheck = {id -> store.toggleItem(id) })
+            TodoItem(data = it, handleCheck = {id -> store.toggleItem(id) }, handleRemove = {id -> store.removeItem(id)})
         }
     }
 }
 
 @Composable
-fun TodoItem(data: TodoItemData, handleCheck: (id: UUID) -> Unit) {
+fun TodoItem(data: TodoItemData, handleCheck: (id: UUID) -> Unit, handleRemove: (id: UUID) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 10.dp)
             .border(1.dp, Color.LightGray)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .fillMaxWidth()
     ) {
-        Text(data.title, modifier = Modifier.padding(start = 10.dp))
+        Text(data.title, modifier = Modifier.padding(start = 10.dp).weight(1f))
         Checkbox(checked = data.status, onCheckedChange = { handleCheck(data.id) })
+        TextButton(onClick = { handleRemove(data.id) }) {
+            Text(text = "删除")
+        }
     }
 }
