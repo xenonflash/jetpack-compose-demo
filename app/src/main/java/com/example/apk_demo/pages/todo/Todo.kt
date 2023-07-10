@@ -1,6 +1,7 @@
 package com.example.apk_demo.pages.todo
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,8 +22,10 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -44,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -66,6 +70,14 @@ enum class TodoType {
     Daily,
     Birthday,
     Misc
+}
+
+val todoTypeIconMap = buildMap<TodoType, ImageVector> {
+    put(TodoType.Misc, Icons.Filled.Home)
+    put(TodoType.Meeting, Icons.Filled.Person)
+    put(TodoType.Event, Icons.Filled.DateRange)
+    put(TodoType.Daily, Icons.Filled.ShoppingCart)
+    put(TodoType.Birthday, Icons.Filled.Star)
 }
 
 
@@ -149,7 +161,7 @@ fun NewItemInput(modifier: Modifier = Modifier, handleAdd: (data: TodoItemData) 
             TodoType.values().forEach { it ->
                 IconButton(onClick = { type = it }) {
                     Icon(
-                        Icons.Filled.Home,
+                        todoTypeIconMap[it]!!,
                         contentDescription = "star",
                         tint = if (type === it) Color.DarkGray else Color.LightGray
                     )
