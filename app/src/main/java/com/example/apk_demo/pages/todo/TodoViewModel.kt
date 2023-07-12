@@ -2,22 +2,22 @@ package com.example.apk_demo.pages.todo
 
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.UUID
 
 class TodoViewModel : ViewModel() {
-    private val _todoItems = MutableLiveData(listOf<TodoItemData>())
-    val todoItems = _todoItems
+    var todoItems = mutableStateListOf<TodoItemData>()
+        private set
     fun addItem(data: TodoItemData) {
-        Log.d("-----", _todoItems.value.toString())
-        _todoItems.value = _todoItems.value!! + listOf(data)
+        Log.d("-----", todoItems.toString())
+        todoItems.add(data)
 
     }
     fun toggleItem(id: UUID) {
         Log.d("-----", id.toString())
-        _todoItems.value = _todoItems.value!!.onEach {
-
+        todoItems = todoItems.onEach {
             if (it.id === id) {
                 Log.d("-----", "toggle!")
                 it.status = !it.status
@@ -26,6 +26,6 @@ class TodoViewModel : ViewModel() {
     }
 
     fun removeItem(id: UUID) {
-        _todoItems.value = todoItems.value?.filter { it -> it.id !== id }
+        todoItems.removeIf { it -> it.id == id }
     }
 }

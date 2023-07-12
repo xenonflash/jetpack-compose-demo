@@ -92,20 +92,20 @@ fun TodoMain(nav: NavHostController, store: TodoViewModel) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TodoList(store.todoItems.observeAsState(listOf()), store)
+        TodoList(store.todoItems, store)
         NewItemInput(modifier = Modifier.align(Alignment.BottomCenter), handleAdd = { data -> store.addItem(data) })
     }
 }
 
 @Composable
-fun TodoList(items: State<List<TodoItemData>>, store: TodoViewModel) {
+fun TodoList(items: List<TodoItemData>, store: TodoViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxHeight(),
         userScrollEnabled = true
 
     ){
-        items(items.value) {it ->
+        items(items) {it ->
             TodoItem(data = it, handleCheck = {id -> store.toggleItem(id) }, handleRemove = {id -> store.removeItem(id)})
         }
     }
@@ -187,7 +187,8 @@ fun NewItemInput(modifier: Modifier = Modifier, handleAdd: (data: TodoItemData) 
                 placeholder = { Text("输入内容...") },
                 onValueChange = { handleChange(it) },
                 modifier = Modifier
-                    .padding(end = 10.dp),
+                    .padding(end = 10.dp)
+                    .weight(1f),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
                 maxLines = 1,
                 // 配置软键盘
