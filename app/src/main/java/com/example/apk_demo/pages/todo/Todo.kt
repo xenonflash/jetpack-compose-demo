@@ -1,7 +1,6 @@
 package com.example.apk_demo.pages.todo
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,32 +22,25 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -106,13 +98,13 @@ fun TodoList(items: List<TodoItemData>, store: TodoViewModel) {
 
     ){
         items(items) {it ->
-            TodoItem(data = it, handleCheck = {id -> store.toggleItem(id) }, handleRemove = {id -> store.removeItem(id)})
+            TodoItem(data = it, handleCheck = store::toggleItem, handleRemove = store::removeItem)
         }
     }
 }
 
 @Composable
-fun TodoItem(data: TodoItemData, handleCheck: (id: UUID) -> Unit, handleRemove: (id: UUID) -> Unit) {
+fun TodoItem(data: TodoItemData, handleCheck: (id: TodoItemData) -> Unit, handleRemove: (id: TodoItemData) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -123,8 +115,8 @@ fun TodoItem(data: TodoItemData, handleCheck: (id: UUID) -> Unit, handleRemove: 
         Text(data.title, modifier = Modifier
             .padding(start = 10.dp)
             .weight(1f))
-        Checkbox(checked = data.status, onCheckedChange = { handleCheck(data.id) })
-        TextButton(onClick = { handleRemove(data.id) }) {
+        Checkbox(checked = data.status, onCheckedChange = { handleCheck(data) })
+        TextButton(onClick = { handleRemove(data) }) {
             Text(text = "❌")
         }
     }
