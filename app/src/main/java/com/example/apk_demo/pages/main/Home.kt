@@ -21,6 +21,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -36,11 +37,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,6 +64,7 @@ import com.example.apk_demo.api.UserApi
 import com.example.apk_demo.api.UserModel
 import com.example.apk_demo.components.BottomBar
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -70,6 +74,11 @@ fun HomePage(nav: NavController) {
         mutableStateOf(true)
     }
     var pagerState = rememberPagerState()
+    var activePageIdx by remember {
+        mutableStateOf(0)
+    }
+
+    val coroutinScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = "hide splash screen", block = {
         delay(700)
@@ -79,11 +88,27 @@ fun HomePage(nav: NavController) {
 
     Box() {
         Scaffold(
+            topBar = {
+                 TopAppBar(
+                     title = {
+                         Text(text = "Todo List")
+                     },
+                     navigationIcon = {
+                         Icon(Icons.Filled.Menu, contentDescription = "menu", modifier = Modifier.padding(end = 10.dp), tint = MaterialTheme.colorScheme.onPrimary)
+                     },
+                     colors = TopAppBarDefaults.mediumTopAppBarColors(
+                         containerColor = MaterialTheme.colorScheme.primary,
+                         titleContentColor = MaterialTheme.colorScheme.onPrimary
+                     )
+                 )
+            },
             bottomBar = {
-                BottomBar()
+                BottomBar(activeIdx = pagerState.currentPage, onClick = {
+                    coroutinScope.launch { pagerState.animateScrollToPage(it) }
+                })
             }
         ) {
-            HorizontalPager(pageCount = 3, state = pagerState) {
+            HorizontalPager(pageCount = 3, state = pagerState, modifier = Modifier.padding(top = 80.dp)) {
                 when(it) {
                     0 -> BodyContent()
                 }

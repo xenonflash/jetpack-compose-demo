@@ -87,7 +87,7 @@ fun DevPage(nav: NavController) {
             MsgCardList()
             MoreComp()
         }
-        BottomBar(Modifier.align(Alignment.BottomCenter))
+        BottomBar()
     }
 
 }
