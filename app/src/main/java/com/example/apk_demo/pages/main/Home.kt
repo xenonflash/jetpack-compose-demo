@@ -9,6 +9,7 @@ import android.window.SplashScreen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.excludeFromSystemGesture
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.materialIcon
@@ -59,17 +62,34 @@ import com.example.apk_demo.api.UserModel
 import com.example.apk_demo.components.BottomBar
 import kotlinx.coroutines.delay
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomePage(nav: NavController) {
     var showSplash by remember {
         mutableStateOf(true)
     }
-    Box {
-        LaunchedEffect(key1 = "hide splash screen", block = {
-            delay(1500)
-            showSplash = false
-        })
-        MainContent()
+    var pagerState = rememberPagerState()
+
+    LaunchedEffect(key1 = "hide splash screen", block = {
+        delay(700)
+        showSplash = false
+//        pagerState.animateScrollToPage(1)
+    })
+
+    Box() {
+        Scaffold(
+            bottomBar = {
+                BottomBar()
+            }
+        ) {
+            HorizontalPager(pageCount = 3, state = pagerState) {
+                when(it) {
+                    0 -> BodyContent()
+                }
+            }
+        }
+
         AnimatedVisibility(
             visible = showSplash,
             exit = fadeOut()
@@ -94,35 +114,6 @@ fun SplashScreen() {
             composition = composition,
             progress = { progress }
         )
-    }
-
-
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainContent() {
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-//        contentColor = MaterialTheme.colorScheme.primary,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Title")
-                },
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Filled.Info, contentDescription = null)
-                    }
-                },
-            )
-        },
-        bottomBar = {
-            BottomBar(modifier = Modifier)
-        }
-    ) {innerPadding ->
-        BodyContent(Modifier.padding(innerPadding))
     }
 
 

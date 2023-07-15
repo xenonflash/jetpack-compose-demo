@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import java.util.UUID
-
 class TodoViewModel : ViewModel() {
     var todoItems = mutableStateListOf<TodoItemData>()
         private set
+
     fun addItem(data: TodoItemData) {
         Log.d("-----", todoItems.toString())
         todoItems.add(data)
@@ -24,3 +25,4 @@ class TodoViewModel : ViewModel() {
     }
 }
 val LocalStore = compositionLocalOf<TodoViewModel> { error("not init") }
+
