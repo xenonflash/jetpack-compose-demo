@@ -15,6 +15,7 @@ import androidx.compose.foundation.excludeFromSystemGesture
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -108,9 +109,15 @@ fun HomePage(nav: NavController) {
                 })
             }
         ) {
-            HorizontalPager(pageCount = 3, state = pagerState, modifier = Modifier.padding(top = 80.dp)) {
+            HorizontalPager(pageCount = 3, state = pagerState, modifier = Modifier.padding(top = 80.dp).fillMaxSize()) {
                 when(it) {
                     0 -> BodyContent()
+                    1 -> Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text("page2")
+                    }
                 }
             }
         }
