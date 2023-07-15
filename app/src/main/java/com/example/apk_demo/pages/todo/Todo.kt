@@ -79,7 +79,8 @@ val todoTypeIconMap = buildMap<TodoType, ImageVector> {
 
 
 @Composable
-fun TodoMain(nav: NavHostController, store: TodoViewModel) {
+fun TodoMain(nav: NavHostController) {
+    val store = LocalStore.current
     Box(
         modifier = Modifier
             .fillMaxSize()
