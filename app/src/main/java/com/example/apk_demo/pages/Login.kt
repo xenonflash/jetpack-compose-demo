@@ -47,9 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apk_demo.R
-import com.example.apk_demo.api.LoginMethod
-import com.example.apk_demo.api.LoginReqModel
-import com.example.apk_demo.api.UserApi
 import okhttp3.internal.wait
 
 
@@ -78,18 +75,18 @@ fun LoginPage(nav: NavController) {
             }
             val ctx = LocalContext.current
             fun handleLogin() {
-                val params = LoginReqModel(
-                    loginMethod = LoginMethod.UNAME,
-                    payload = object {
-                        val username = username
-                        var password = password
-                    }
-                )
-                UserApi.login(params, onSuccess = {
-                    Log.d("login params", params.toString())
-                    Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
-                    nav.navigate("home")
-                })
+//                val params = LoginReqModel(
+//                    loginMethod = LoginMethod.UNAME,
+//                    payload = object {
+//                        val username = username
+//                        var password = password
+//                    }
+//                )
+//                UserApi.login(params, onSuccess = {
+//                    Log.d("login params", params.toString())
+//                    Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
+//                    nav.navigate("home")
+//                })
             }
 
 
