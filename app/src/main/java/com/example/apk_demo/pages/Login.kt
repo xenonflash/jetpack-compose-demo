@@ -1,6 +1,8 @@
 package com.example.apk_demo.pages
 
 
+import LoginParams
+import LoginPayload
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -31,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.apk_demo.R
+import kotlinx.coroutines.launch
 import okhttp3.internal.wait
+import userApi
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,23 +78,20 @@ fun LoginPage(nav: NavController) {
             var password by remember {
                 mutableStateOf("")
             }
+            var coroutineScope = rememberCoroutineScope()
             val ctx = LocalContext.current
             fun handleLogin() {
-//                val params = LoginReqModel(
-//                    loginMethod = LoginMethod.UNAME,
-//                    payload = object {
-//                        val username = username
-//                        var password = password
-//                    }
-//                )
-//                UserApi.login(params, onSuccess = {
-//                    Log.d("login params", params.toString())
-//                    Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
-//                    nav.navigate("home")
-//                })
+                val params = LoginParams(
+                    loginMethod = LoginMethod.UNAME,
+                    payload = LoginPayload(username, password)
+                )
+                coroutineScope.launch {
+                    userApi.login(params)
+                    Log.d("login params", params.toString())
+                    Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
+                    nav.navigate("home")
+                }
             }
-
-
             Text(text = "登录", style = TextStyle(fontSize = 30.sp), modifier = Modifier.padding(bottom = 15.dp))
             OutlinedTextField(
                 value = username,

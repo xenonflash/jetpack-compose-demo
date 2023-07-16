@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import api
 import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -51,6 +50,7 @@ import com.example.apk_demo.R
 import com.example.apk_demo.components.BottomBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import userApi
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -155,7 +155,7 @@ fun BodyContent(modifier: Modifier = Modifier) {
 
         fun getUser() {
             coroutineScope.launch {
-                userInfo = api.getUserInfo()
+                userInfo = userApi.getUserInfo()
             }
         }
 
