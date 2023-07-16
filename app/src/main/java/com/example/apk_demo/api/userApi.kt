@@ -31,9 +31,9 @@ data class LoginPayload(val username: String, val password: String)
 object userApi{
 
     //获取用户信息
-    suspend fun getUserInfo() = ktorClient.get("http://www.yankc.com:7001/userInfo").body<HttpRes<UserInfo>>().data
+    suspend fun getUserInfo() = ktorClient.get("/userInfo").body<HttpRes<UserInfo>>().data
     // 登录
-    suspend fun login(params: LoginParams) = ktorClient.post("http://www.yankc.com:7001/login") {
+    suspend fun login(params: LoginParams) = ktorClient.post("/login") {
         setBody(params)
     }.body<HttpRes<String>>().data
 }

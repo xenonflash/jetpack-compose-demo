@@ -4,18 +4,34 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 
+@OptIn(ExperimentalSerializationApi::class)
 val ktorClient = HttpClient(Android) {
+    // Configure default request feature.
+    defaultRequest {
+
+//        header("X-My-Header", "MyValue")
+    }
+    // Default request for POST, PUT, DELETE,etc...
+    install(DefaultRequest) {
+        header(HttpHeaders.ContentType, ContentType.Application.Json)
+        //add this accept() for accept Json Body or Raw Json as Request Body
+        accept(ContentType.Application.Json)
+        url(host = "www.yankc.com", port = 7001)
+    }
     install(Logging) {
         level = LogLevel.ALL
     }
@@ -35,12 +51,9 @@ val ktorClient = HttpClient(Android) {
         })
     }
 
-    // Default request for POST, PUT, DELETE,etc...
-    install(DefaultRequest) {
-        header(HttpHeaders.ContentType, ContentType.Application.Json)
-        //add this accept() for accept Json Body or Raw Json as Request Body
-        accept(ContentType.Application.Json)
-    }
+
+
+
 }
 
 @Serializable
