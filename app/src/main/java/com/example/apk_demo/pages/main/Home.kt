@@ -3,19 +3,34 @@ package com.example.apk_demo.pages
 import UserInfo
 import android.annotation.SuppressLint
 import android.util.Log
+import android.util.Size
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.animateRectAsState
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -23,6 +38,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,7 +52,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -91,16 +112,11 @@ fun HomePage(nav: NavController) {
             }
         ) {
             HorizontalPager(pageCount = 3, state = pagerState, modifier = Modifier
-                .padding(top = 80.dp)
+                .padding(top = 70.dp)
                 .fillMaxSize()) {
                 when(it) {
                     0 -> BodyContent()
-                    1 -> Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text("page2")
-                    }
+                    1 -> Animations()
                 }
             }
         }
@@ -130,64 +146,91 @@ fun SplashScreen() {
             progress = { progress }
         )
     }
-
-
 }
 
 @Composable
 fun BodyContent(modifier: Modifier = Modifier) {
+    var userInfo by remember {
+        mutableStateOf<UserInfo>(UserInfo())
+    }
+    var msg by remember {
+        mutableStateOf("")
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    fun getUser() {
+        coroutineScope.launch {
+            userInfo = userApi.getUserInfo()
+            Log.d("----------", userInfo.avatar)
+        }
+    }
+    val ctx = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier)
     ){
-        var checked by remember {
-            mutableStateOf(false)
-        }
-        var userInfo by remember {
-            mutableStateOf<UserInfo>(UserInfo())
-        }
 
-        var msg by remember {
-            mutableStateOf("你好")
-        }
-        val coroutineScope = rememberCoroutineScope()
-
-        fun getUser() {
-            coroutineScope.launch {
-                userInfo = userApi.getUserInfo()
-            }
-        }
 
         Button(onClick = { getUser() }) {
             Text("获取用户信息")
         }
 
-        Text("Home", style = TextStyle(fontSize = 28.sp))
         Text("用户名: " + userInfo.name)
         Text("年龄: " + userInfo.age)
-        Text("msg: $msg")
-        AsyncImage(model = userInfo.avatar, contentDescription = "user avatar")
+//        AsyncImage(model = userInfo.avatar, contentDescription = "user avatar")
+        Surface(
+            modifier = Modifier
+                .size(80.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onDoubleTap = { tapOffset ->
+                            Toast
+                                .makeText(ctx, "拍一拍我干嘛", Toast.LENGTH_SHORT)
+                                .show()
+                            msg += "小黄鸭拍了拍我\n"
+                        }
+                    )
+                },
+            shape = CircleShape, shadowElevation = 10.dp,
+
+        ) {
+            AsyncImage(model = "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif", contentDescription = "default_avatar")
+        }
+        Text(text = msg)
     }
 }
 
-@Composable
-fun WebComp() {
-    // Declare a string that contains a url
-    val mUrl = "https://news.google.com"
 
-    // Adding a WebView inside AndroidView
-    // with layout as full screen
-    AndroidView(factory = {
-        WebView(it).apply {
-            var layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            webViewClient = WebViewClient()
-            loadUrl(mUrl)
+@Composable
+fun Animations() {
+    var checked by remember {
+        mutableStateOf(false)
+    }
+
+    val animXOffset by animateDpAsState(targetValue = if (checked) 100.dp else 0.dp)
+    val animRadius by animateDpAsState(targetValue = if (checked) 20.dp else 50.dp)
+    val animColor by animateColorAsState(targetValue = if (checked) Color.Green else Color.Red)
+    Column(
+        Modifier
+            .fillMaxSize()
+            .border(1.dp, Color.Red)
+            .padding(bottom = 80.dp)) {
+        Text(text = "animation", style = MaterialTheme.typography.titleMedium)
+
+        // movable
+        Surface(
+            Modifier
+                .size(100.dp)
+                .offset(x = animXOffset)
+                .clickable { checked = !checked },
+            shape =RoundedCornerShape(animRadius),
+            color = animColor,
+            shadowElevation = 10.dp
+        ){
+            Text("点击")
         }
-    }, update = {
-        it.loadUrl(mUrl)
-    })
+
+    }
 }
