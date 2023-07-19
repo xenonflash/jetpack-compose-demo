@@ -52,6 +52,8 @@ android {
 
 dependencies {
     def ktor_version = "2.3.2"
+    def room_version="2.5.0"
+
     implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
     implementation "com.airbnb.android:lottie-compose:6.0.0"
     implementation 'androidx.core:core-ktx:1.10.1'
@@ -74,6 +76,7 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
     // ktor
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
@@ -81,4 +84,10 @@ dependencies {
     implementation "io.ktor:ktor-client-logging:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+
+    // room
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    //noinspection GradleDependency
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 }

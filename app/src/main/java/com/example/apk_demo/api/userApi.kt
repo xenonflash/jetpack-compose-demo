@@ -29,11 +29,14 @@ data class LoginParams(
 data class LoginPayload(val username: String, val password: String)
 
 object userApi{
-
     //获取用户信息
-    suspend fun getUserInfo() = ktorClient.get("/userInfo").body<HttpRes<UserInfo>>().data
+    suspend fun getUserInfo() = Api.ktorClient.get("/userInfo").body<HttpRes<UserInfo>>().data
     // 登录
-    suspend fun login(params: LoginParams) = ktorClient.post("/login") {
-        setBody(params)
-    }.body<HttpRes<String>>().data
+    suspend fun login(params: LoginParams): String? {
+        val token = Api.ktorClient.post("/login") {
+            setBody(params)
+        }.body<HttpRes<String>>().data
+        Api.authToken = token
+        return token
+    }
 }

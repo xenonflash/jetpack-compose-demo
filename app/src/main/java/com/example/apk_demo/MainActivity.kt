@@ -1,5 +1,6 @@
 package com.example.apk_demo
 
+import Api
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +10,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apk_demo.dataStore.Storage
 import com.example.apk_demo.pages.LoginPage
 import com.example.apk_demo.pages.DevPage
 import com.example.apk_demo.pages.HomePage
@@ -33,6 +36,10 @@ class MainActivity : ComponentActivity() {
                 }
             )
             val navController = rememberNavController()
+            val ctx = LocalContext.current
+            val storage = Storage(ctx)
+            Api.authToken = storage.getData.toString()
+            todoViewModel.initStorage((ctx))
             CompositionLocalProvider(LocalStore provides todoViewModel) {
                 NavHost(navController = navController, startDestination = "login") {
                     composable(route = "dev", content = { DevPage(nav = navController) })

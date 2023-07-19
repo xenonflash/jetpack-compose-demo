@@ -86,7 +86,8 @@ fun LoginPage(nav: NavController) {
                     payload = LoginPayload(username, password)
                 )
                 coroutineScope.launch {
-                    userApi.login(params)
+                    val token = userApi.login(params)
+                    // token 存下来
                     Log.d("login params", params.toString())
                     Toast.makeText(ctx, "登陆成功", Toast.LENGTH_SHORT).show()
                     nav.navigate("home")
