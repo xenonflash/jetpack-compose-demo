@@ -19,7 +19,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,6 +62,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -72,6 +77,7 @@ import com.example.apk_demo.components.BottomBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import userApi
+import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -165,14 +171,18 @@ fun BodyContent(modifier: Modifier = Modifier) {
         }
     }
     val ctx = LocalContext.current
+    var dragOffsetX by remember {
+        mutableStateOf(0f)
+    }
+    var dragOffsetY by remember {
+        mutableStateOf(0f)
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier)
     ){
-
-
         Button(onClick = { getUser() }) {
             Text("获取用户信息")
         }
@@ -192,6 +202,19 @@ fun BodyContent(modifier: Modifier = Modifier) {
                             msg += "小黄鸭拍了拍我\n"
                         }
                     )
+                }
+                .offset{ IntOffset(dragOffsetX.roundToInt(), dragOffsetY.roundToInt()) }
+//                .draggable(
+//                    orientation = Orientation.Horizontal,
+//                    state = rememberDraggableState(onDelta = {
+//                        dragOffsetX += it
+//                    })
+//                ),
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        dragOffsetX += dragAmount.x
+                        dragOffsetY += dragAmount.y
+                    }
                 },
             shape = CircleShape, shadowElevation = 10.dp,
 
